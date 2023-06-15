@@ -9,16 +9,16 @@ export default function ContactList({ contacts, handleContactRemove }) {
         <Box maxWidth={400} margin={'0 auto'}>
             <List>
                 {contacts.length !== 0 &&
-                    contacts.map((item) => (
-                        <ListItem sx={{padding:0, paddingBottom: '0.3rem'}} key={generateId()} secondaryAction={<IconButton edge="end" aria-label="delete" id={item.id} onClick={handleContactRemove}><RiDeleteBin6Line /></IconButton>}>
+                    contacts.map(({ id, avatar, name, phoneNumber }) => (
+                        <ListItem sx={{ padding: 0, paddingBottom: '0.3rem' }} key={generateId()} secondaryAction={<IconButton edge="end" aria-label="delete" id={id} onClick={handleContactRemove}><RiDeleteBin6Line /></IconButton>}>
                             <ListItemAvatar>
                                 <Avatar fontSize="large">
-                                    <IoIosContact size={30}/>
+                                    {avatar ? <img height={'40px'} width={'40px'} src={avatar} alt={name} /> : <IoIosContact size={30} />}
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText>
-                                <Typography variant="body1" component="span" style={{ fontSize: '1.1rem' }}>
-                                    {item.name}: {item.phone}
+                                <Typography variant="body1" component="span" style={{ fontSize: '0.8rem' }}>
+                                    {name}: {phoneNumber.includes('x') ? phoneNumber.split('x')[0].trim() : phoneNumber.trim()}
                                 </Typography>
                             </ListItemText>
                         </ListItem>

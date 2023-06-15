@@ -13,7 +13,7 @@ const Form = ({ onSubmit }) => {
 
     const handleInput = ({ target: { value, name } }) => {
         if (name === 'name') setName(value);
-        if (name === 'number') setNumber(value);
+        if (name === 'phoneNumber') setNumber(value);
     };
 
     const handleSubmitForm = (e) => {
@@ -44,7 +44,7 @@ const Form = ({ onSubmit }) => {
                 onChange={handleInput}
                 value={number}
                 type="tel"
-                name="number"
+                name="phoneNumber"
                 pattern="^(\+?[0-9.\(\)\-\s]*)$"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 required

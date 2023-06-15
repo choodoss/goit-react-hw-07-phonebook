@@ -5,22 +5,24 @@ import Search from '../Search/Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 import { allsSelector } from '../storage/selectors';
-import { addContact, removeContact } from '../storage/contactSlice';
+import { addContact, deleteContact, fetchContacts } from '../storage/contactSlice';
 import ContactList from '../List/ContactList';
 import { createNotification } from '../tools/nofications';
 import { NotificationContainer } from 'react-notifications';
 import { addFilter } from '../storage/filterSlice';
+import { useEffect } from 'react';
+import { getItemsThunk } from '../storage/Thunks';
+import { GetAll } from '../storage/FetchFn/getDataContacts';
 
 export default function App() {
   const { contacts, filter } = useSelector(allsSelector);
   const dispatch = useDispatch();
-
   const handleFilter = (value) => {
     dispatch(addFilter(value));
   };
 
   const handleContactRemove = ({ currentTarget: { id } }) => {
-    dispatch(removeContact(id));
+    dispatch(deleteContact(id));
   };
 
   const handleSubmitForm = (formData) => {
@@ -29,8 +31,12 @@ export default function App() {
       createNotification();
       return;
     }
-    dispatch(addContact({ id: generateId(), name: formData.get('name'), phone: formData.get('number') }));
+    dispatch(addContact({ name: formData.get('name'), phoneNumber: formData.get('phoneNumber') }));
   };
+
+  useEffect(() => {
+    dispatch(getItemsThunk(GetAll))
+  }, [dispatch])
 
   const app =
     <AppContainer>
@@ -44,6 +50,7 @@ export default function App() {
 
   return app;
 }
+
 
 
 
