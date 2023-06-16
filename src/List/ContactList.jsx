@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { List, Box, Avatar, ListItem, IconButton, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import { IoIosContact } from 'react-icons/io';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import generateId from '../tools/idRandomize';
+import { nanoid } from '@reduxjs/toolkit';
 
 export default function ContactList({ contacts, handleContactRemove }) {
     return (
@@ -10,7 +10,7 @@ export default function ContactList({ contacts, handleContactRemove }) {
             <List>
                 {contacts.length !== 0 &&
                     contacts.map(({ id, avatar, name, phoneNumber }) => (
-                        <ListItem sx={{ padding: 0, paddingBottom: '0.3rem' }} key={generateId()} secondaryAction={<IconButton edge="end" aria-label="delete" id={id} onClick={handleContactRemove}><RiDeleteBin6Line /></IconButton>}>
+                        <ListItem sx={{ padding: 0, paddingBottom: '0.3rem' }} key={nanoid()} secondaryAction={<IconButton edge="end" aria-label="delete" id={id} onClick={handleContactRemove}><RiDeleteBin6Line /></IconButton>}>
                             <ListItemAvatar>
                                 <Avatar fontSize="large">
                                     {avatar ? <img height={'40px'} width={'40px'} src={avatar} alt={name} /> : <IoIosContact size={30} />}

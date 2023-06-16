@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { TextField, Button } from '@mui/material';
-import generateId from '../tools/idRandomize';
 import { useState } from 'react';
 import { FormSection } from './Form.styled';
+import { nanoid } from '@reduxjs/toolkit';
 
-const inputIdName = generateId();
-const inputIdNTel = generateId();
+const inputIdName = nanoid();
+const inputIdNTel = nanoid();
 
 const Form = ({ onSubmit }) => {
     const [name, setName] = useState('');
