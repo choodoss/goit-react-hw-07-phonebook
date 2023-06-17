@@ -9,46 +9,34 @@ const initialState = {
     }
 }
 
-let pendingContact = getItemsThunk.pending || addContactThunk.pending || deleteContactThunk.pending;
-let fulfilledContact = getItemsThunk.fulfilled || addContactThunk.fulfilled || deleteContactThunk.fulfilled;
-let rejectedContact = getItemsThunk.rejected || addContactThunk.rejected || deleteContactThunk.rejected;
+const hendlePending = (state) => { state.contacts.isLoading = true }
+const hendleFulfilled = (state, { payload }) => {
+    state.contacts.items = payload.sort((a, b) => a.name.localeCompare(b.name));
+    state.contacts.isLoading = false;
+    state.contacts.error = null;
+}
+const hendleRejected = () => (state, { payload }) => {
+    state.contacts.isLoading = false;
+    state.contacts.error = payload;
+}
 
 const contactSlice = createSlice({
     name: 'contacts',
     initialState,
     extraReducers: (builder) => {
-        console.dir(getItemsThunk)
         builder
-            .addCase(pendingContact, (state) => { state.contacts.isLoading = true })
-            .addCase(fulfilledContact, (state, { payload }) => {
-                state.contacts.items = payload.sort((a, b) => a.name.localeCompare(b.name));
-                state.contacts.isLoading = false;
-                state.contacts.error = null;
-            })
-            .addCase(rejectedContact, (state, { payload }) => {
-                state.contacts.isLoading = false;
-                state.contacts.error = payload;
-            })
+            .addCase(getItemsThunk.pending, hendlePending)
+            .addCase(getItemsThunk.fulfilled, hendleFulfilled)
+            .addCase(getItemsThunk.rejected, hendleRejected)
+            .addCase(addContactThunk.pending, hendlePending)
+            .addCase(addContactThunk.fulfilled, hendleFulfilled)
+            .addCase(addContactThunk.rejected, hendleRejected)
+            .addCase(deleteContactThunk.pending, hendlePending)
+            .addCase(deleteContactThunk.fulfilled, hendleFulfilled)
+            .addCase(deleteContactThunk.rejected, hendleRejected)
     }
 
-    import { createAsyncThunk } from "@reduxjs/toolkit"
-    import { dataContacts, deleteContacts, postContact } from "./FetchFn/getDataContacts"
-    
-    
-    export const getItemsThunk = createAsyncThunk('contacts/getAllcontacts', () => {
-        return dataContacts()
-    })
-    
-    export const addContactThunk = createAsyncThunk('contact/addContact', async (payload) => {
-        await dataContacts(postContact({ name: payload.get('name'), phoneNumber: payload.get('phoneNumber') }))
-        return dataContacts()
-    })
-    
-    export const deleteContactThunk = createAsyncThunk('contact/deleteContact', async (payload) => {
-        await dataContacts(deleteContacts(), payload);
-        return dataContacts()
-    })
-
+    // reducer:
     // {
     //     [getItemsThunk.pending]: (state) => {
     //         state.contacts.isLoading = true;

@@ -1,24 +1,29 @@
-const URL = 'https://648ae78d17f1536d65e9eeb8.mockapi.io/';
-export const GetAllContact = {
-    method: 'GET',
-    headers: { 'content-type': 'application/json' }
-}
-export const postContact = (obj) => {
-    return {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(obj)
-    }
-}
-export const deleteContacts = () => ({
-    method: 'DELETE',
-})
+import axios from 'axios';
 
-export const dataContacts = async (parameters, id = "") => {
-    console.log(`${URL}contacts${id ? `/${id}` : ''}`)
-    const res = await fetch(`${URL}contacts${id ? `/${id}` : ''}`, parameters);
-    if (!res.ok) {
-        throw new Error(res.status);
+axios.defaults.baseURL = 'https://648ae78d17f1536d65e9eeb8.mockapi.io/';
+
+export const getAllContacts = async () => {
+    try {
+        const response = await axios.get('contacts');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.message);
     }
-    return res.json();
-}
+};
+
+export const addContact = async (value) => {
+    try {
+        const response = await axios.post('contacts', value);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const deleteContact = async (id) => {
+    try {
+        await axios.delete(`contacts/${id}`);
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
