@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { addContactThunk, getItemsThunk, deleteContactThunk } from "./Thunks";
 
 const initialState = {
@@ -25,15 +25,18 @@ const contactSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(getItemsThunk.pending, hendlePending)
-            .addCase(getItemsThunk.fulfilled, hendleFulfilled)
-            .addCase(getItemsThunk.rejected, hendleRejected)
-            .addCase(addContactThunk.pending, hendlePending)
-            .addCase(addContactThunk.fulfilled, hendleFulfilled)
-            .addCase(addContactThunk.rejected, hendleRejected)
-            .addCase(deleteContactThunk.pending, hendlePending)
-            .addCase(deleteContactThunk.fulfilled, hendleFulfilled)
-            .addCase(deleteContactThunk.rejected, hendleRejected)
+            .addMatcher(isAnyOf[getItemsThunk.pending, addContactThunk.pending, deleteContactThunk.pending], hendlePending)
+            .addMatcher(isAnyOf[getItemsThunk.fulfilled, addContactThunk.fulfilled, deleteContactThunk.fulfilled], hendleFulfilled)
+            .addMatcher(isAnyOf[getItemsThunk.rejected, addContactThunk.rejected, deleteContactThunk.rejected], hendleRejected)
+        // .addCase(getItemsThunk.pending, hendlePending)
+        // .addCase(getItemsThunk.fulfilled, hendleFulfilled)
+        // .addCase(getItemsThunk.rejected, hendleRejected)
+        // .addCase(addContactThunk.pending, hendlePending)
+        // .addCase(addContactThunk.fulfilled, hendleFulfilled)
+        // .addCase(addContactThunk.rejected, hendleRejected)
+        // .addCase(deleteContactThunk.pending, hendlePending)
+        // .addCase(deleteContactThunk.fulfilled, hendleFulfilled)
+        // .addCase(deleteContactThunk.rejected, hendleRejected)
     }
 
     // reducer:
