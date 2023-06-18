@@ -25,9 +25,13 @@ const contactSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         builder
-            .addMatcher(isAnyOf[getItemsThunk.pending, addContactThunk.pending, deleteContactThunk.pending], hendlePending)
-            .addMatcher(isAnyOf[getItemsThunk.fulfilled, addContactThunk.fulfilled, deleteContactThunk.fulfilled], hendleFulfilled)
-            .addMatcher(isAnyOf[getItemsThunk.rejected, addContactThunk.rejected, deleteContactThunk.rejected], hendleRejected)
+            .addCase(getItemsThunk.fulfilled, hendleFulfilled)
+            .addMatcher((action) => action.type.endsWith('/pending'), hendlePending)
+            // .addMatcher((action) => action.type.endsWith('/fulfilled'), hendleFulfilled)
+            .addMatcher((action) => action.type.endsWith('/rejected'), hendleRejected)
+        // .addMatcher(isAnyOf([getItemsThunk.pending, addContactThunk.pending, deleteContactThunk.pending]), hendlePending)
+        // .addMatcher(isAnyOf([getItemsThunk.fulfilled, addContactThunk.fulfilled, deleteContactThunk.fulfilled]), hendleFulfilled)
+        // .addMatcher(isAnyOf([getItemsThunk.rejected, addContactThunk.rejected, deleteContactThunk.rejected]), hendleRejected)
         // .addCase(getItemsThunk.pending, hendlePending)
         // .addCase(getItemsThunk.fulfilled, hendleFulfilled)
         // .addCase(getItemsThunk.rejected, hendleRejected)
